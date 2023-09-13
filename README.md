@@ -1,5 +1,17 @@
 # Polyglot.jl
 
+[build-img]: https://github.com/psrenergy/Polyglot.jl/workflows/CI/badge.svg?branch=master
+[build-url]: https://github.com/psrenergy/Polyglot.jl/actions?query=workflow%3ACI
+
+[codecov-img]: https://codecov.io/gh/psrenergy/Polyglot.jl/coverage.svg?branch=master
+[codecov-url]: https://codecov.io/gh/psrenergy/Polyglot.jl?branch=master
+
+# StateSpaceModels.jl
+
+| **Build Status** | **Coverage** |
+|:-----------------:|:-----------------:|
+| [![Build Status][build-img]][build-url] | [![Codecov branch][codecov-img]][codecov-url] |
+
 A minimal and opinionated way to deal with compositional loggers built with LoggingExtras.jl. 
 
 The package also helps users to deal with logs in multiple languages.
