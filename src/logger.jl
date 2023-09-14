@@ -175,7 +175,7 @@ function create_polyglot_logger(
         level_to_print = choose_level_to_print(args.level, level_dict)
         open_bracket, close_bracket = get_tag_brackets(args.level, brackets_dict)
         space_before_msg = treat_empty_tag(level_to_print, close_bracket)
-        io = choose_terminal_io(args.level) # needed to use Polyglot in MD Studio. It takes stderr as error and stdout as non error log
+        io = choose_terminal_io(args.level)
         print(io, open_bracket)
         print_colored(io, level_to_print, args.level, color_dict, background_reverse_dict)
         println(io, close_bracket, space_before_msg, args.message)

@@ -1,10 +1,10 @@
-# Polyglot.jl
+# LoggingPolyglot.jl
 
-[build-img]: https://github.com/psrenergy/Polyglot.jl/workflows/CI/badge.svg?branch=master
-[build-url]: https://github.com/psrenergy/Polyglot.jl/actions?query=workflow%3ACI
+[build-img]: https://github.com/psrenergy/LoggingPolyglot.jl/workflows/CI/badge.svg?branch=master
+[build-url]: https://github.com/psrenergy/LoggingPolyglot.jl/actions?query=workflow%3ACI
 
-[codecov-img]: https://codecov.io/gh/psrenergy/Polyglot.jl/coverage.svg?branch=master
-[codecov-url]: https://codecov.io/gh/psrenergy/Polyglot.jl?branch=master
+[codecov-img]: https://codecov.io/gh/psrenergy/LoggingPolyglot.jl/coverage.svg?branch=master
+[codecov-url]: https://codecov.io/gh/psrenergy/LoggingPolyglot.jl?branch=master
 
 # StateSpaceModels.jl
 
@@ -18,29 +18,29 @@ The package also helps users to deal with logs in multiple languages.
 
 ## Basic usage
 
-Polyglot will log messages to different locations.
+LoggingPolyglot will log messages to different locations.
 
 ```julia
-import Polyglot
+import LoggingPolyglot
 
 log_file = "my_application.log"
-polyglot_logger = Polyglot.create_polyglot_logger(log_file)
+polyglot_logger = LoggingPolyglot.create_polyglot_logger(log_file)
 
 # Only goes to file
-Polyglot.debug("debug message")
+LoggingPolyglot.debug("debug message")
 
 # Goes to file and console
-Polyglot.info("info message")
-Polyglot.warn("warn message")
-Polyglot.non_fatal_error("error message")
+LoggingPolyglot.info("info message")
+LoggingPolyglot.warn("warn message")
+LoggingPolyglot.non_fatal_error("error message")
 
 # Goes to console and file and then runs exit(1) if the session is not iterative.
-Polyglot.fatal_error("Application cannot continue")
+LoggingPolyglot.fatal_error("Application cannot continue")
 ```
 
 ## Log in differnt languages
 
-Polyglot stores some constants that help users deal with logs in different languages.
+LoggingPolyglot stores some constants that help users deal with logs in different languages.
 
 ```julia
 log_path = "langs.log"
@@ -54,16 +54,16 @@ langs_dict = Dict(
         "pt" => "O arquivo @@@ não existe.",
     )
 )
-Polyglot.set_dict(langs_dict)
-Polyglot.set_language("pt")
-polyglot_logger = Polyglot.create_polyglot_logger(log_path)
+LoggingPolyglot.set_dict(langs_dict)
+LoggingPolyglot.set_language("pt")
+polyglot_logger = LoggingPolyglot.create_polyglot_logger(log_path)
 # It will log the portuguese version "Olá!"
-Polyglot.info(1)
+LoggingPolyglot.info(1)
 # It will display the message "O arquivo file.txt não existe"
-Polyglot.info(2, "file.txt")
+LoggingPolyglot.info(2, "file.txt")
 ```
 
-One suggestion to store the codes ans messages for multiple languages is to store it on a TOML file. The function `Polyglot.set_dict` accepts the TOML path as input. 
+One suggestion to store the codes ans messages for multiple languages is to store it on a TOML file. The function `LoggingPolyglot.set_dict` accepts the TOML path as input. 
 
 Dictionary TOML:
 ```toml
@@ -80,18 +80,18 @@ Set dictionary from TOML:
 ```julia
 log_path = "langs.log"
 toml_dict_path = "example.toml"
-Polyglot.set_dict(toml_dict_path)
-Polyglot.set_language("pt")
-polyglot_logger = Polyglot.create_polyglot_logger(log_path)
+LoggingPolyglot.set_dict(toml_dict_path)
+LoggingPolyglot.set_language("pt")
+polyglot_logger = LoggingPolyglot.create_polyglot_logger(log_path)
 # It will log the portuguese version "Olá!"
-Polyglot.info(1)
+LoggingPolyglot.info(1)
 # It will display the message "O arquivo file.txt não existe"
-Polyglot.info(2, "file.txt")
+LoggingPolyglot.info(2, "file.txt")
 ```
 
 ## Create logger
 
-The arguments that can be passed using `Polyglot.create_polyglot_logger`:
+The arguments that can be passed using `LoggingPolyglot.create_polyglot_logger`:
 * `log_file_path`: Log file path. This input must be passed
 * `min_level_console`: Minimum level shown in console. Default: Logging.Info
 * `min_level_file`: Minimum level shown in file. Default: Logging.Debug
@@ -169,7 +169,7 @@ background_reverse_dict = Dict(
 )
 
 log_file = "my_application.log"
-Polyglot.create_polyglot_logger(log_file; level_dict, color_dict, background_reverse_dict)
+LoggingPolyglot.create_polyglot_logger(log_file; level_dict, color_dict, background_reverse_dict)
 ```
 
 The next example shows how to remove the `info` tag
@@ -191,8 +191,8 @@ level_dict = Dict(
     "Error" => "Error",
     "Fatal Error" => "Fatal Error",
 )
-Polyglot.create_polyglot_logger(log_file; brackets_dict, level_dict)
-Polyglot.info("info msg")
-Polyglot.warn("warn msg")
-Polyglot.remove_log_file_path_on_logger_creation(log_file)
+LoggingPolyglot.create_polyglot_logger(log_file; brackets_dict, level_dict)
+LoggingPolyglot.info("info msg")
+LoggingPolyglot.warn("warn msg")
+LoggingPolyglot.remove_log_file_path_on_logger_creation(log_file)
 ```

@@ -19,5 +19,5 @@ jobs:
           using Pkg
           Pkg.add(PackageSpec(name="Aqua"))
           Pkg.develop(PackageSpec(path=pwd()))
-          using Polyglot, Aqua
-          Aqua.test_all(Polyglot; unbound_args = false)
+          using LoggingPolyglot, Aqua
+          Aqua.test_all(LoggingPolyglot; unbound_args = false)

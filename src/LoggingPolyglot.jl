@@ -1,4 +1,4 @@
-module Polyglot
+module LoggingPolyglot
 
 using LoggingExtras
 using Dates

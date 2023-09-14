@@ -1,11 +1,11 @@
 module TestConstants
 
 using Test
-import Polyglot
+import LoggingPolyglot
 
 function test_set_and_get_language()
-    Polyglot.set_language("pt")
-    @test Polyglot.get_language() == "pt"
+    LoggingPolyglot.set_language("pt")
+    @test LoggingPolyglot.get_language() == "pt"
 end
 
 function test_set_and_get_valid_dict()
@@ -19,8 +19,8 @@ function test_set_and_get_valid_dict()
             "pt" => "tchau!",
         ),
     )
-    Polyglot.set_dict(valid_dict)
-    @test Polyglot.get_dict() == valid_dict
+    LoggingPolyglot.set_dict(valid_dict)
+    @test LoggingPolyglot.get_dict() == valid_dict
 end
 
 function test_set_and_get_valid_dict_with_code_strings()
@@ -34,8 +34,8 @@ function test_set_and_get_valid_dict_with_code_strings()
             "pt" => "tchau!",
         ),
     )
-    Polyglot.set_dict(valid_dict)
-    @test Polyglot.get_dict() == valid_dict
+    LoggingPolyglot.set_dict(valid_dict)
+    @test LoggingPolyglot.get_dict() == valid_dict
 end
 
 function test_set_invalid_code_dict()
@@ -45,7 +45,7 @@ function test_set_invalid_code_dict()
             "pt" => "oi!",
         ),
     )
-    @test_throws ErrorException Polyglot.set_dict(invalid_dict)
+    @test_throws ErrorException LoggingPolyglot.set_dict(invalid_dict)
 end
 
 function test_set_invalid_language_dict()
@@ -55,7 +55,7 @@ function test_set_invalid_language_dict()
             "pt" => "oi!",
         ),
     )
-    @test_throws ErrorException Polyglot.set_dict(invalid_dict)
+    @test_throws ErrorException LoggingPolyglot.set_dict(invalid_dict)
 end
 
 function test_set_invalid_empty_language_dict()
@@ -65,12 +65,12 @@ function test_set_invalid_empty_language_dict()
             "pt" => "oi!",
         ),
     )
-    @test_throws ErrorException Polyglot.set_dict(invalid_dict)
+    @test_throws ErrorException LoggingPolyglot.set_dict(invalid_dict)
 end
 
 function test_set_empty_language_dict()
     invalid_dict = Dict()
-    @test_throws ErrorException Polyglot.set_dict(invalid_dict)
+    @test_throws ErrorException LoggingPolyglot.set_dict(invalid_dict)
 end
 
 function runtests()
