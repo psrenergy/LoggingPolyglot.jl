@@ -101,7 +101,8 @@ function test_log_names_with_dict()
         "Error" => "error",
     )
     log_path = "log_names_test.log"
-    polyglot_logger = LoggingPolyglot.create_polyglot_logger(log_path; level_dict = level_dict)
+    polyglot_logger =
+        LoggingPolyglot.create_polyglot_logger(log_path; level_dict = level_dict)
     LoggingPolyglot.debug("test")
     LoggingPolyglot.debug("test"; level = -100)
     LoggingPolyglot.info("test")
