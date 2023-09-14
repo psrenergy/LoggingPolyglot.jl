@@ -6,8 +6,6 @@
 [codecov-img]: https://codecov.io/gh/psrenergy/LoggingPolyglot.jl/coverage.svg?branch=master
 [codecov-url]: https://codecov.io/gh/psrenergy/LoggingPolyglot.jl?branch=master
 
-# Polyglot.jl
-
 | **Build Status** | **Coverage** |
 |:-----------------:|:-----------------:|
 | [![Build Status][build-img]][build-url] | [![Codecov branch][codecov-img]][codecov-url] |
