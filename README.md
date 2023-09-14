@@ -6,7 +6,7 @@
 [codecov-img]: https://codecov.io/gh/psrenergy/LoggingPolyglot.jl/coverage.svg?branch=master
 [codecov-url]: https://codecov.io/gh/psrenergy/LoggingPolyglot.jl?branch=master
 
-# StateSpaceModels.jl
+# Polyglot.jl
 
 | **Build Status** | **Coverage** |
 |:-----------------:|:-----------------:|
