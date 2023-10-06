@@ -59,7 +59,10 @@ end
 function test_direct_log_fatal_error_other_exception()
     log_error_path = "error.log"
     polyglot_logger = LoggingPolyglot.create_polyglot_logger(log_error_path)
-    @test_throws DimensionMismatch LoggingPolyglot.fatal_error("dim mismatch"; exception = DimensionMismatch(""))
+    @test_throws DimensionMismatch LoggingPolyglot.fatal_error(
+        "dim mismatch";
+        exception = DimensionMismatch(""),
+    )
     LoggingPolyglot.close_polyglot_logger(polyglot_logger)
     rm(log_error_path; force = true)
     return nothing
