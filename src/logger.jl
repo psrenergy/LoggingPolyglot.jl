@@ -225,7 +225,7 @@ end
 
 function print_colored(io::IO, str::String; color::Symbol = :normal, reverse::Bool = false)
     if color == :normal && reverse == false
-        print(io, str) # MD Studio doesn't support colors and even printstyled with color = :normal and reverse = false doesn't work
+        print(io, str)
     else
         printstyled(io, str; color = color, reverse = reverse)
     end

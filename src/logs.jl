@@ -1,15 +1,3 @@
-# Additional level
-macro fatal_error(msg)
-    quote
-        @logmsg FatalErrorLevel $(esc(msg))
-        if isinteractive()
-            error("Fatal Error")
-        else
-            exit(1)
-        end
-    end
-end
-
 # Direct logs
 function debug(msg::String; level::Int = -1000)
     @assert Logging.Debug <= Logging.LogLevel(level) < Logging.Info
@@ -28,8 +16,9 @@ function non_fatal_error(msg::String)
     @error msg
     return nothing
 end
-function fatal_error(msg::String)
-    @fatal_error msg
+function fatal_error(msg::String; exception::Exception = ErrorException("Fatal error"))
+    @logmsg FatalErrorLevel msg
+    throw(exception)
     return nothing
 end
 
@@ -100,8 +89,12 @@ function non_fatal_error(code::Int, replacements...)
     non_fatal_error(msg)
     return nothing
 end
-function fatal_error(code::Int, replacements...)
+function fatal_error(
+    code::Int,
+    replacements...;
+    exception::Exception = ErrorException("Fatal error"),
+)
     msg = prepare_msg(code, replacements...)
-    fatal_error(msg)
+    fatal_error(msg; exception = exception)
     return nothing
 end

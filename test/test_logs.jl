@@ -47,6 +47,27 @@ function test_direct_log_error()
     return nothing
 end
 
+function test_direct_log_fatal_error()
+    log_error_path = "error.log"
+    polyglot_logger = LoggingPolyglot.create_polyglot_logger(log_error_path)
+    @test_throws ErrorException LoggingPolyglot.fatal_error("test message")
+    LoggingPolyglot.close_polyglot_logger(polyglot_logger)
+    rm(log_error_path; force = true)
+    return nothing
+end
+
+function test_direct_log_fatal_error_other_exception()
+    log_error_path = "error.log"
+    polyglot_logger = LoggingPolyglot.create_polyglot_logger(log_error_path)
+    @test_throws DimensionMismatch LoggingPolyglot.fatal_error(
+        "dim mismatch";
+        exception = DimensionMismatch(""),
+    )
+    LoggingPolyglot.close_polyglot_logger(polyglot_logger)
+    rm(log_error_path; force = true)
+    return nothing
+end
+
 function test_different_logs_same_file()
     log_path = "test.log"
     polyglot_logger = LoggingPolyglot.create_polyglot_logger(log_path)
