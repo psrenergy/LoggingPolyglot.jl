@@ -1,6 +1,6 @@
 const FatalErrorLevel = Logging.LogLevel(3000)
 
-function set_language(lang::String)
+function set_language(lang::AbstractString)
     POLYGLOT_LANG[1] = lang
     return lang
 end
@@ -57,7 +57,7 @@ function set_dict(dict::Dict)
     return dict
 end
 
-function set_dict(toml_dict_path::String)
+function set_dict(toml_dict_path::AbstractString)
     dict = toml_file_to_dict(toml_dict_path)
     if !is_valid_dict(dict)
         error("The dictionary of codes and language is invalid.")
@@ -70,7 +70,7 @@ function get_dict()
     return POLYGLOT_LOG_DICT[1]
 end
 
-function toml_file_to_dict(toml_dict_path::String)
+function toml_file_to_dict(toml_dict_path::AbstractString)
     @assert isfile(toml_dict_path)
     toml_dict = TOML.parsefile(toml_dict_path)
     new_dict = Dict{Int, Dict{String, String}}()
