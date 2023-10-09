@@ -13,11 +13,11 @@ function close_polyglot_logger(logger::TeeLogger)
 end
 
 """
-remove_log_file_path_on_logger_creation(log_file_path::String)
+remove_log_file_path_on_logger_creation(log_file_path::AbstractString)
 
 * `log_file_path`: Remove log file in path log_file_path
 """
-function remove_log_file_path_on_logger_creation(log_file_path::String)
+function remove_log_file_path_on_logger_creation(log_file_path::AbstractString)
     try
         if global_logger() isa TeeLogger
             close_polyglot_logger(global_logger())
@@ -69,7 +69,7 @@ function get_tag_brackets(level::LogLevel, brackets_dict::Dict)
     end
 end
 
-function treat_empty_tag(level_to_print::String, close_bracket::String)
+function treat_empty_tag(level_to_print::AbstractString, close_bracket::AbstractString)
     if level_to_print == "" && close_bracket == ""
         return ""
     else
@@ -79,7 +79,7 @@ end
 
 """
     create_polyglot_logger(
-        log_file_path::String; 
+        log_file_path::AbstractString; 
         min_level_console::Logging.LogLevel, 
         min_level_file::Logging.LogLevel,
         brackets,
@@ -129,7 +129,7 @@ end
     )
 """
 function create_polyglot_logger(
-    log_file_path::String;
+    log_file_path::AbstractString;
     min_level_console::Logging.LogLevel = Logging.Info,
     min_level_file::Logging.LogLevel = Logging.Debug,
     append_log::Bool = false,
@@ -209,7 +209,7 @@ end
 
 function print_colored(
     io::IO,
-    str::String,
+    str::AbstractString,
     level::Logging.LogLevel,
     color_dict::Dict{String, Symbol},
     reverse_dict::Dict{String, Bool},
@@ -223,7 +223,12 @@ function print_colored(
     return nothing
 end
 
-function print_colored(io::IO, str::String; color::Symbol = :normal, reverse::Bool = false)
+function print_colored(
+    io::IO,
+    str::AbstractString;
+    color::Symbol = :normal,
+    reverse::Bool = false,
+)
     if color == :normal && reverse == false
         print(io, str)
     else
