@@ -1,6 +1,6 @@
 name = "LoggingPolyglot"
 uuid = "211639cc-9b11-4cfd-abc6-8f7477829344"
-version = "0.2.1"
+version = "0.2.2"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
