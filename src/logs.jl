@@ -20,6 +20,9 @@ function fatal_error(
     msg::AbstractString;
     exception::Exception = ErrorException("Fatal error"),
 )
+    logger = Logging.global_logger()
+    close_polyglot_logger(logger)
+
     @logmsg FatalErrorLevel msg
     throw(exception)
     return nothing
