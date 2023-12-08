@@ -4,7 +4,7 @@ using LoggingExtras
 using Dates
 using TOML
 
-const POLYGLOT_LANG = String["en"]
+const POLYGLOT_LANGUAGE = String["en"]
 const POLYGLOT_LOG_DICT = [Dict()]
 
 include("constants.jl")
