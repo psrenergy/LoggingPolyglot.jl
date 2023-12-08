@@ -9,7 +9,7 @@ LoggingExtras = "e6f89c97-d47a-5376-807f-9c37f3926c36"
 TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 
 [compat]
-Aqua = "0.8.4"
+Aqua = "0.8"
 Dates = "1"
 Logging = "1"
 LoggingExtras = "1"
