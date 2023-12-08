@@ -4,22 +4,27 @@ function debug(msg::AbstractString; level::Integer = -1000)
     @logmsg Logging.LogLevel(level) msg
     return nothing
 end
+
 function info(msg::AbstractString)
     @info msg
     return nothing
 end
+
 function success(msg::AbstractString)
     @logmsg Logging.LogLevel(SUCCESS_LEVEL) msg
     return nothing
 end
+
 function warn(msg::AbstractString)
     @warn msg
     return nothing
 end
+
 function non_fatal_error(msg::AbstractString)
     @error msg
     return nothing
 end
+
 function fatal_error(
     msg::AbstractString;
     exception::Exception = ErrorException("Fatal error"),
@@ -84,21 +89,25 @@ function debug(code::Integer, replacements...; level::Integer = -1000)
     debug(msg; level)
     return nothing
 end
+
 function info(code::Integer, replacements...)
     msg = prepare_msg(code, replacements...)
     info(msg)
     return nothing
 end
+
 function warn(code::Integer, replacements...)
     msg = prepare_msg(code, replacements...)
     warn(msg)
     return nothing
 end
+
 function non_fatal_error(code::Integer, replacements...)
     msg = prepare_msg(code, replacements...)
     non_fatal_error(msg)
     return nothing
 end
+
 function fatal_error(
     code::Integer,
     replacements...;

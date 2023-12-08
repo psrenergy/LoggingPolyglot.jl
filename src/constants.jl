@@ -1,13 +1,13 @@
 const FATAL_ERROR_LEVEL = Logging.LogLevel(3000)
 const SUCCESS_LEVEL = Logging.LogLevel(1)
 
-function set_language(lang::AbstractString)
-    POLYGLOT_LANG[1] = lang
-    return lang
+function set_language(language::AbstractString)
+    POLYGLOT_LANGUAGE[1] = language
+    return language
 end
 
 function get_language()
-    return POLYGLOT_LANG[1]
+    return POLYGLOT_LANGUAGE[1]
 end
 
 function is_valid_dict(dict::Dict)::Bool
@@ -71,9 +71,9 @@ function get_dict()
     return POLYGLOT_LOG_DICT[1]
 end
 
-function toml_file_to_dict(toml_dict_path::AbstractString)
-    @assert isfile(toml_dict_path)
-    toml_dict = TOML.parsefile(toml_dict_path)
+function toml_file_to_dict(path::AbstractString)
+    @assert isfile(path)
+    toml_dict = TOML.parsefile(path)
     new_dict = Dict{Int, Dict{String, String}}()
     for (k, v) in toml_dict
         new_key = parse(Int, k)

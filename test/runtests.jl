@@ -1,12 +1,23 @@
+import LoggingPolyglot
+
+using Aqua
 using Test
 
-for file in readdir(@__DIR__)
-    if file in ["runtests.jl"]
-        continue
-    elseif !endswith(file, ".jl")
-        continue
+function testall()
+    @testset "Aqua.jl" begin
+        Aqua.test_all(LoggingPolyglot)
     end
-    @testset "$(file)" begin
-        include(file)
+
+    for file in readdir(@__DIR__)
+        if file in ["runtests.jl"]
+            continue
+        elseif !endswith(file, ".jl")
+            continue
+        end
+        @testset "$(file)" begin
+            include(file)
+        end
     end
 end
+
+testall()

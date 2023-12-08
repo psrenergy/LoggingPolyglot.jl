@@ -13,19 +13,19 @@ function close_polyglot_logger(logger::TeeLogger)
 end
 
 """
-remove_log_file_path_on_logger_creation(log_file_path::AbstractString)
+remove_log_file_path_on_logger_creation(path::AbstractString)
 
-* `log_file_path`: Remove log file in path log_file_path
+* `path`: Path to log file to be removed
 """
-function remove_log_file_path_on_logger_creation(log_file_path::AbstractString)
+function remove_log_file_path_on_logger_creation(path::AbstractString)
     try
         if global_logger() isa TeeLogger
             close_polyglot_logger(global_logger())
-            rm(log_file_path; force = true)
+            rm(path; force = true)
         end
     catch err
         if isa(err, Base.IOError)
-            error("Cannot create a logger if $log_file_path still has IOStreams open.")
+            error("Cannot create a logger if $path still has IOStreams open.")
         end
     end
     return nothing
@@ -63,7 +63,7 @@ end
 function get_tag_brackets(level::LogLevel, brackets_dict::Dict)
     level_str = get_level_string(level)
     tag_brackets = brackets_dict[level_str]
-    # If brackets are empty return empty strings
+
     if !isempty(tag_brackets)
         return tag_brackets
     else
@@ -180,7 +180,7 @@ function create_polyglot_logger(
         remove_log_file_path_on_logger_creation(log_file_path)
     end
 
-    # Console logger only min_level_console and up
+    # console logger only min_level_console and up
     format_logger_console = FormatLogger() do io, args
         level_to_print = choose_level_to_print(args.level, level_dict)
         open_bracket, close_bracket = get_tag_brackets(args.level, brackets_dict)
@@ -190,9 +190,10 @@ function create_polyglot_logger(
         print_colored(io, level_to_print, args.level, color_dict, background_reverse_dict)
         println(io, close_bracket, space_before_msg, args.message)
     end
+
     console_logger = MinLevelLogger(format_logger_console, min_level_console)
 
-    # File logger logs min_level_file and up
+    # file logger logs min_level_file and up
     format_logger_file = FormatLogger(log_file_path; append = true) do io, args
         level_to_print = choose_level_to_print(args.level, level_dict)
         open_bracket, close_bracket = get_tag_brackets(args.level, brackets_dict)
