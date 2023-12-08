@@ -5,10 +5,7 @@ using Test
 
 function testall()
 @testset "Aqua.jl" begin
-    @testset "Ambiguities" begin
-        Aqua.test_ambiguities(LoggingPolyglot, recursive = false)
-    end
-    Aqua.test_all(LoggingPolyglot, ambiguities = false)
+    Aqua.test_all(LoggingPolyglot)
 end
 
 for file in readdir(@__DIR__)
