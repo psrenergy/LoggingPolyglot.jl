@@ -49,13 +49,15 @@ function choose_terminal_io(level::LogLevel)
 end
 
 function get_level_string(level::LogLevel)
-    if Logging.Info <= level <= Logging.Error || level == Logging.Debug
-        return string(level)
+    if level == SUCCESS_LEVEL
+        return "Success"
+    elseif level == FATAL_ERROR_LEVEL
+        return "Fatal Error"
     elseif Logging.Debug < level < Logging.Info
         return "Debug Level"
-    elseif level == FatalErrorLevel
-        return "Fatal Error"
-    end
+    else
+        string(level)
+    end 
 end
 
 function get_tag_brackets(level::LogLevel, brackets_dict::Dict)
@@ -97,6 +99,7 @@ end
         "Debug Level" => ["[", "]"],
         "Debug" => ["[", "]"],
         "Info" => ["[", "]"],
+        "Success" => ["[", "]"],
         "Warn" => ["[", "]"],
         "Error" => ["[", "]"],
         "Fatal Error" => ["[", "]"],
@@ -106,6 +109,7 @@ end
         "Debug Level" => "Debug Level",
         "Debug" => "Debug",
         "Info" => "Info",
+        "Success" => "Success",
         "Warn" => "Warn",
         "Error" => "Error"
     )
@@ -114,6 +118,7 @@ end
         "Debug Level" => :cyan,
         "Debug" => :cyan,
         "Info" => :cyan,
+        "Success" => :green,
         "Warn" => :yellow,
         "Error" => :red,
         "Fatal Error" => :red
@@ -123,6 +128,7 @@ end
         "Debug Level" => false,
         "Debug" => false,
         "Info" => false,
+        "Success" => false,
         "Warn" => false,
         "Error" => false,
         "Fatal Error" => true
@@ -137,6 +143,7 @@ function create_polyglot_logger(
         "Debug Level" => ["[", "]"],
         "Debug" => ["[", "]"],
         "Info" => ["[", "]"],
+        "Success" => ["[", "]"],
         "Warn" => ["[", "]"],
         "Error" => ["[", "]"],
         "Fatal Error" => ["[", "]"],
@@ -145,6 +152,7 @@ function create_polyglot_logger(
         "Debug Level" => "Debug Level",
         "Debug" => "Debug",
         "Info" => "Info",
+        "Success" => "Success",
         "Warn" => "Warn",
         "Error" => "Error",
         "Fatal Error" => "Fatal Error",
@@ -153,6 +161,7 @@ function create_polyglot_logger(
         "Debug Level" => :cyan,
         "Debug" => :cyan,
         "Info" => :cyan,
+        "Success" => :green,
         "Warn" => :yellow,
         "Error" => :red,
         "Fatal Error" => :red,
@@ -161,6 +170,7 @@ function create_polyglot_logger(
         "Debug Level" => false,
         "Debug" => false,
         "Info" => false,
+        "Success" => false,
         "Warn" => false,
         "Error" => false,
         "Fatal Error" => true,

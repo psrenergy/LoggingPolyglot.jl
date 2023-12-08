@@ -8,6 +8,10 @@ function info(msg::AbstractString)
     @info msg
     return nothing
 end
+function success(msg::AbstractString)
+    @logmsg Logging.LogLevel(SUCCESS_LEVEL) msg
+    return nothing
+end
 function warn(msg::AbstractString)
     @warn msg
     return nothing
@@ -20,10 +24,10 @@ function fatal_error(
     msg::AbstractString;
     exception::Exception = ErrorException("Fatal error"),
 )
+    @logmsg FATAL_ERROR_LEVEL msg
+
     logger = Logging.global_logger()
     close_polyglot_logger(logger)
-
-    @logmsg FatalErrorLevel msg
     throw(exception)
     return nothing
 end

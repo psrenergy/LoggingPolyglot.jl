@@ -1,4 +1,5 @@
-const FatalErrorLevel = Logging.LogLevel(3000)
+const FATAL_ERROR_LEVEL = Logging.LogLevel(3000)
+const SUCCESS_LEVEL = Logging.LogLevel(1)
 
 function set_language(lang::AbstractString)
     POLYGLOT_LANG[1] = lang
