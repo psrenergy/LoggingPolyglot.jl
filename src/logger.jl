@@ -90,7 +90,7 @@ end
         log_file_path::AbstractString; 
         min_level_console::Logging.LogLevel, 
         min_level_file::Logging.LogLevel,
-        brackets,
+        bracket_dict,
         level_dict,
         color_dict,
         background_reverse_dict
@@ -144,6 +144,7 @@ end
         "Debug Level" => " ",
         "Debug" => " ",
         "Info" => " ",
+        "Success" => " ",
         "Warn" => " ",
         "Error" => " ",
         "Fatal Error" => " "
@@ -194,6 +195,7 @@ function create_polyglot_logger(
         "Debug Level" => " ",
         "Debug" => " ",
         "Info" => " ",
+        "Success" => " ",
         "Warn" => " ",
         "Error" => " ",
         "Fatal Error" => " ",
