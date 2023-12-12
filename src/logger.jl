@@ -32,13 +32,12 @@ function remove_log_file_path_on_logger_creation(path::AbstractString)
 end
 
 function choose_level_to_print(level::LogLevel, level_dict::Dict)
-    key = get_level_string(level)
-    value = level_dict[key]
+    level_string = get_level_string(level)
 
-    if key == "Debug Level"
-        return string(value, " ", level.level)
+    if level_string == "Debug Level"
+        return string(level_dict[level_string], " ", level.level)
     else
-        return string(value)
+        return string(level_dict[level_string])
     end
 end
 
@@ -63,24 +62,24 @@ function get_level_string(level::LogLevel)
 end
 
 function get_tag_brackets(level::LogLevel, bracket_dict::Dict)
-    key = get_level_string(level)
-    value = bracket_dict[key]
+    level_string = get_level_string(level)
+    bracket = bracket_dict[level_string]
 
-    if !isempty(value)
-        return value
+    if !isempty(bracket)
+        return bracket
     else
         return ["", ""]
     end
 end
 
 function get_separator(level::LogLevel, close_bracket::AbstractString, separator_dict::Dict)
-    key = get_level_string(level)
-    value = separator_dict[key]
+    level_string = get_level_string(level)
+    separator = separator_dict[level_string]
 
-    if level_to_print == "" && close_bracket == ""
+    if level_string == "" && close_bracket == ""
         return ""
-    elseif !isempty(value)
-        return value
+    elseif !isempty(separator)
+        return separator
     else
         return " "
     end
@@ -208,7 +207,7 @@ function create_polyglot_logger(
     format_logger_console = FormatLogger() do io, args
         level_to_print = choose_level_to_print(args.level, level_dict)
         open_bracket, close_bracket = get_tag_brackets(args.level, bracket_dict)
-        separator = get_separator(level_to_print, close_bracket, separator_dict)
+        separator = get_separator(args.level, close_bracket, separator_dict)
         io = choose_terminal_io(args.level)
 
         print(io, open_bracket)
@@ -222,7 +221,7 @@ function create_polyglot_logger(
     format_logger_file = FormatLogger(log_file_path; append = true) do io, args
         level_to_print = choose_level_to_print(args.level, level_dict)
         open_bracket, close_bracket = get_tag_brackets(args.level, bracket_dict)
-        separator = get_separator(level_to_print, close_bracket, separator_dict)
+        separator = get_separator(args.level, close_bracket, separator_dict)
 
         println(
             io,
@@ -251,10 +250,10 @@ function print_colored(
     color_dict::Dict{String, Symbol},
     reverse_dict::Dict{String, Bool},
 )
-    key = get_level_string(level)
+    level_string = get_level_string(level)
 
-    color = color_dict[key]
-    reverse = reverse_dict[key]
+    color = color_dict[level_string]
+    reverse = reverse_dict[level_string]
 
     print_colored(io, str; color = color, reverse = reverse)
 
