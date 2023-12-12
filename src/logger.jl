@@ -33,10 +33,12 @@ end
 
 function choose_level_to_print(level::LogLevel, level_dict::Dict)
     key = get_level_string(level)
+    value = level_dict[key]
+
     if key == "Debug Level"
-        return string(level_dict[key], " ", level.level)
+        return string(value, " ", level.level)
     else
-        return string(level_dict[key])
+        return string(value)
     end
 end
 
@@ -137,6 +139,15 @@ end
         "Warn" => false,
         "Error" => false,
         "Fatal Error" => true
+    )
+* `separator_dict`: Dictionary to select logging tag separator to print. Default: 
+    Dict(
+        "Debug Level" => " ",
+        "Debug" => " ",
+        "Info" => " ",
+        "Warn" => " ",
+        "Error" => " ",
+        "Fatal Error" => " "
     )
 """
 function create_polyglot_logger(
