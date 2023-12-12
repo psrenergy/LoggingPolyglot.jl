@@ -56,7 +56,7 @@ function get_level_string(level::LogLevel)
     elseif Logging.Debug < level < Logging.Info
         return "Debug Level"
     else
-        string(level)
+        return string(level)
     end 
 end
 
@@ -71,20 +71,14 @@ function get_tag_brackets(level::LogLevel, bracket_dict::Dict)
     end
 end
 
-function get_separator(level::LogLevel, separator_dict::Dict)
+function get_separator(level::LogLevel, close_bracket::AbstractString, separator_dict::Dict)
     key = get_level_string(level)
     value = separator_dict[key]
 
-    if !isempty(value)
-        return value
-    else
-        return ""
-    end
-end
-
-function treat_empty_tag(level_to_print::AbstractString, close_bracket::AbstractString)
     if level_to_print == "" && close_bracket == ""
         return ""
+    elseif !isempty(value)
+        return value
     else
         return " "
     end
@@ -203,11 +197,12 @@ function create_polyglot_logger(
     format_logger_console = FormatLogger() do io, args
         level_to_print = choose_level_to_print(args.level, level_dict)
         open_bracket, close_bracket = get_tag_brackets(args.level, bracket_dict)
-        space_before_msg = treat_empty_tag(level_to_print, close_bracket)
+        separator = get_separator(level_to_print, close_bracket, separator_dict)
         io = choose_terminal_io(args.level)
+
         print(io, open_bracket)
         print_colored(io, level_to_print, args.level, color_dict, background_reverse_dict)
-        println(io, close_bracket, space_before_msg, args.message)
+        println(io, close_bracket, separator, args.message)
     end
 
     console_logger = MinLevelLogger(format_logger_console, min_level_console)
@@ -216,7 +211,8 @@ function create_polyglot_logger(
     format_logger_file = FormatLogger(log_file_path; append = true) do io, args
         level_to_print = choose_level_to_print(args.level, level_dict)
         open_bracket, close_bracket = get_tag_brackets(args.level, bracket_dict)
-        space_before_msg = treat_empty_tag(level_to_print, close_bracket)
+        separator = get_separator(level_to_print, close_bracket, separator_dict)
+
         println(
             io,
             now(),
@@ -224,7 +220,7 @@ function create_polyglot_logger(
             open_bracket,
             level_to_print,
             close_bracket,
-            space_before_msg,
+            separator,
             args.message,
         )
     end
