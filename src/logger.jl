@@ -198,7 +198,7 @@ function create_polyglot_logger(
         "Warn" => " ",
         "Error" => " ",
         "Fatal Error" => " ",
-    ),   
+    ),
 )
     if !append_log
         remove_log_file_path_on_logger_creation(log_file_path)
