@@ -32,11 +32,11 @@ function remove_log_file_path_on_logger_creation(path::AbstractString)
 end
 
 function choose_level_to_print(level::LogLevel, level_dict::Dict)
-    level_str = get_level_string(level)
-    if level_str == "Debug Level"
-        return string(level_dict[level_str], " ", level.level)
+    key = get_level_string(level)
+    if key == "Debug Level"
+        return string(level_dict[key], " ", level.level)
     else
-        return string(level_dict[level_str])
+        return string(level_dict[key])
     end
 end
 
@@ -58,14 +58,25 @@ function get_level_string(level::LogLevel)
     end
 end
 
-function get_tag_brackets(level::LogLevel, brackets_dict::Dict)
-    level_str = get_level_string(level)
-    tag_brackets = brackets_dict[level_str]
+function get_tag_brackets(level::LogLevel, bracket_dict::Dict)
+    key = get_level_string(level)
+    value = bracket_dict[key]
 
-    if !isempty(tag_brackets)
-        return tag_brackets
+    if !isempty(value)
+        return value
     else
         return ["", ""]
+    end
+end
+
+function get_separator(level::LogLevel, separator_dict::Dict)
+    key = get_level_string(level)
+    value = separator_dict[key]
+
+    if !isempty(value)
+        return value
+    else
+        return ""
     end
 end
 
@@ -92,7 +103,7 @@ end
 * `min_level_console`: Minimum level shown in console. Default: Logging.Info
 * `min_level_file`: Minimum level shown in file. Default: Logging.Debug
 * `append_log`: Boolean input to append logs in existing log file (if true) or overwrite/create log file (if false). Default is false
-* `brackets_dict`: select the brackets for each LogLevel. As default,
+* `bracket_dict`: select the brackets for each LogLevel. As default,
     Dict(
         "Debug Level" => ["[", "]"],
         "Debug" => ["[", "]"],
@@ -133,7 +144,7 @@ function create_polyglot_logger(
     min_level_console::Logging.LogLevel = Logging.Info,
     min_level_file::Logging.LogLevel = Logging.Debug,
     append_log::Bool = false,
-    brackets_dict::Dict = Dict(
+    bracket_dict::Dict = Dict(
         "Debug Level" => ["[", "]"],
         "Debug" => ["[", "]"],
         "Info" => ["[", "]"],
@@ -165,6 +176,14 @@ function create_polyglot_logger(
         "Error" => false,
         "Fatal Error" => true,
     ),
+    separator_dict::Dict = Dict(
+        "Debug Level" => " ",
+        "Debug" => " ",
+        "Info" => " ",
+        "Warn" => " ",
+        "Error" => " ",
+        "Fatal Error" => " ",
+    ),   
 )
     if !append_log
         remove_log_file_path_on_logger_creation(log_file_path)
@@ -173,7 +192,7 @@ function create_polyglot_logger(
     # console logger only min_level_console and up
     format_logger_console = FormatLogger() do io, args
         level_to_print = choose_level_to_print(args.level, level_dict)
-        open_bracket, close_bracket = get_tag_brackets(args.level, brackets_dict)
+        open_bracket, close_bracket = get_tag_brackets(args.level, bracket_dict)
         space_before_msg = treat_empty_tag(level_to_print, close_bracket)
         io = choose_terminal_io(args.level)
         print(io, open_bracket)
@@ -186,7 +205,7 @@ function create_polyglot_logger(
     # file logger logs min_level_file and up
     format_logger_file = FormatLogger(log_file_path; append = true) do io, args
         level_to_print = choose_level_to_print(args.level, level_dict)
-        open_bracket, close_bracket = get_tag_brackets(args.level, brackets_dict)
+        open_bracket, close_bracket = get_tag_brackets(args.level, bracket_dict)
         space_before_msg = treat_empty_tag(level_to_print, close_bracket)
         println(
             io,
@@ -215,12 +234,13 @@ function print_colored(
     color_dict::Dict{String, Symbol},
     reverse_dict::Dict{String, Bool},
 )
-    level_str = get_level_string(level)
+    key = get_level_string(level)
 
-    color = color_dict[level_str]
-    reverse = reverse_dict[level_str]
+    color = color_dict[key]
+    reverse = reverse_dict[key]
 
     print_colored(io, str; color = color, reverse = reverse)
+
     return nothing
 end
 
