@@ -218,7 +218,7 @@ function test_empty_brackets()
     logger_path = "brackets.log"
     logger = LoggingPolyglot.create_polyglot_logger(
         logger_path;
-        brackets_dict = brackets,
+        bracket_dict = brackets,
         level_dict = level,
     )
 

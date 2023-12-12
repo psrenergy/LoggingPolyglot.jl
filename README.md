@@ -94,9 +94,9 @@ The arguments that can be passed using `LoggingPolyglot.create_polyglot_logger`:
 * `min_level_console`: Minimum level shown in console. Default: Logging.Info
 * `min_level_file`: Minimum level shown in file. Default: Logging.Debug
 * `append_log`: Boolean input to append logs in existing log file (if true) or overwrite/create log file (if false). Default is false
-* `brackets_dict`: select the brackets for each LogLevel. As default,
+* `bracket_dict`: select the brackets for each LogLevel. As default,
 ```julia
-brackets_dict = Dict(
+bracket_dict = Dict(
     "Debug Level" => ["[", "]"],
     "Debug" => ["[", "]"],
     "Info" => ["[", "]"],
@@ -173,7 +173,7 @@ LoggingPolyglot.create_polyglot_logger(log_file; level_dict, color_dict, backgro
 The next example shows how to remove the `info` tag
 ```julia
 log_file = "my_application.log"
-brackets_dict = Dict(
+bracket_dict = Dict(
     "Debug Level" => ["[", "]"],
     "Debug" => ["[", "]"],
     "Info" => ["", ""],
@@ -189,7 +189,7 @@ level_dict = Dict(
     "Error" => "Error",
     "Fatal Error" => "Fatal Error",
 )
-LoggingPolyglot.create_polyglot_logger(log_file; brackets_dict, level_dict)
+LoggingPolyglot.create_polyglot_logger(log_file; bracket_dict, level_dict)
 LoggingPolyglot.info("info msg")
 LoggingPolyglot.warn("warn msg")
 LoggingPolyglot.remove_log_file_path_on_logger_creation(log_file)

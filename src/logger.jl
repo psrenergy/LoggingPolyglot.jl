@@ -32,11 +32,12 @@ function remove_log_file_path_on_logger_creation(path::AbstractString)
 end
 
 function choose_level_to_print(level::LogLevel, level_dict::Dict)
-    level_str = get_level_string(level)
-    if level_str == "Debug Level"
-        return string(level_dict[level_str], " ", level.level)
+    level_string = get_level_string(level)
+
+    if level_string == "Debug Level"
+        return string(level_dict[level_string], " ", level.level)
     else
-        return string(level_dict[level_str])
+        return string(level_dict[level_string])
     end
 end
 
@@ -49,31 +50,36 @@ function choose_terminal_io(level::LogLevel)
 end
 
 function get_level_string(level::LogLevel)
-    if level == SUCCESS_LEVEL
-        return "Success"
+    return if level == SUCCESS_LEVEL
+        "Success"
     elseif level == FATAL_ERROR_LEVEL
-        return "Fatal Error"
+        "Fatal Error"
     elseif Logging.Debug < level < Logging.Info
-        return "Debug Level"
+        "Debug Level"
     else
         string(level)
     end
 end
 
-function get_tag_brackets(level::LogLevel, brackets_dict::Dict)
-    level_str = get_level_string(level)
-    tag_brackets = brackets_dict[level_str]
+function get_tag_brackets(level::LogLevel, bracket_dict::Dict)
+    level_string = get_level_string(level)
+    bracket = bracket_dict[level_string]
 
-    if !isempty(tag_brackets)
-        return tag_brackets
+    if !isempty(bracket)
+        return bracket
     else
         return ["", ""]
     end
 end
 
-function treat_empty_tag(level_to_print::AbstractString, close_bracket::AbstractString)
-    if level_to_print == "" && close_bracket == ""
+function get_separator(level::LogLevel, close_bracket::AbstractString, separator_dict::Dict)
+    level_string = get_level_string(level)
+    separator = separator_dict[level_string]
+
+    if level_string == "" && close_bracket == ""
         return ""
+    elseif !isempty(separator)
+        return separator
     else
         return " "
     end
@@ -84,7 +90,7 @@ end
         log_file_path::AbstractString; 
         min_level_console::Logging.LogLevel, 
         min_level_file::Logging.LogLevel,
-        brackets,
+        bracket_dict,
         level_dict,
         color_dict,
         background_reverse_dict
@@ -94,7 +100,7 @@ end
 * `min_level_console`: Minimum level shown in console. Default: Logging.Info
 * `min_level_file`: Minimum level shown in file. Default: Logging.Debug
 * `append_log`: Boolean input to append logs in existing log file (if true) or overwrite/create log file (if false). Default is false
-* `brackets_dict`: select the brackets for each LogLevel. As default,
+* `bracket_dict`: select the brackets for each LogLevel. As default,
     Dict(
         "Debug Level" => ["[", "]"],
         "Debug" => ["[", "]"],
@@ -133,13 +139,23 @@ end
         "Error" => false,
         "Fatal Error" => true
     )
+* `separator_dict`: Dictionary to select logging tag separator to print. Default: 
+    Dict(
+        "Debug Level" => " ",
+        "Debug" => " ",
+        "Info" => " ",
+        "Success" => " ",
+        "Warn" => " ",
+        "Error" => " ",
+        "Fatal Error" => " "
+    )
 """
 function create_polyglot_logger(
     log_file_path::AbstractString;
     min_level_console::Logging.LogLevel = Logging.Info,
     min_level_file::Logging.LogLevel = Logging.Debug,
     append_log::Bool = false,
-    brackets_dict::Dict = Dict(
+    bracket_dict::Dict = Dict(
         "Debug Level" => ["[", "]"],
         "Debug" => ["[", "]"],
         "Info" => ["[", "]"],
@@ -175,6 +191,15 @@ function create_polyglot_logger(
         "Error" => false,
         "Fatal Error" => true,
     ),
+    separator_dict::Dict = Dict(
+        "Debug Level" => " ",
+        "Debug" => " ",
+        "Info" => " ",
+        "Success" => " ",
+        "Warn" => " ",
+        "Error" => " ",
+        "Fatal Error" => " ",
+    ),
 )
     if !append_log
         remove_log_file_path_on_logger_creation(log_file_path)
@@ -183,12 +208,13 @@ function create_polyglot_logger(
     # console logger only min_level_console and up
     format_logger_console = FormatLogger() do io, args
         level_to_print = choose_level_to_print(args.level, level_dict)
-        open_bracket, close_bracket = get_tag_brackets(args.level, brackets_dict)
-        space_before_msg = treat_empty_tag(level_to_print, close_bracket)
+        open_bracket, close_bracket = get_tag_brackets(args.level, bracket_dict)
+        separator = get_separator(args.level, close_bracket, separator_dict)
         io = choose_terminal_io(args.level)
+
         print(io, open_bracket)
         print_colored(io, level_to_print, args.level, color_dict, background_reverse_dict)
-        println(io, close_bracket, space_before_msg, args.message)
+        println(io, close_bracket, separator, args.message)
     end
 
     console_logger = MinLevelLogger(format_logger_console, min_level_console)
@@ -196,8 +222,9 @@ function create_polyglot_logger(
     # file logger logs min_level_file and up
     format_logger_file = FormatLogger(log_file_path; append = true) do io, args
         level_to_print = choose_level_to_print(args.level, level_dict)
-        open_bracket, close_bracket = get_tag_brackets(args.level, brackets_dict)
-        space_before_msg = treat_empty_tag(level_to_print, close_bracket)
+        open_bracket, close_bracket = get_tag_brackets(args.level, bracket_dict)
+        separator = get_separator(args.level, close_bracket, separator_dict)
+
         println(
             io,
             now(),
@@ -205,7 +232,7 @@ function create_polyglot_logger(
             open_bracket,
             level_to_print,
             close_bracket,
-            space_before_msg,
+            separator,
             args.message,
         )
     end
@@ -225,12 +252,13 @@ function print_colored(
     color_dict::Dict{String, Symbol},
     reverse_dict::Dict{String, Bool},
 )
-    level_str = get_level_string(level)
+    level_string = get_level_string(level)
 
-    color = color_dict[level_str]
-    reverse = reverse_dict[level_str]
+    color = color_dict[level_string]
+    reverse = reverse_dict[level_string]
 
     print_colored(io, str; color = color, reverse = reverse)
+
     return nothing
 end
 
