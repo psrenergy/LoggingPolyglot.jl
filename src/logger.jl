@@ -51,14 +51,14 @@ function choose_terminal_io(level::LogLevel)
 end
 
 function get_level_string(level::LogLevel)
-    if level == SUCCESS_LEVEL
-        return "Success"
+    return if level == SUCCESS_LEVEL
+         "Success"
     elseif level == FATAL_ERROR_LEVEL
-        return "Fatal Error"
+        "Fatal Error"
     elseif Logging.Debug < level < Logging.Info
-        return "Debug Level"
+        "Debug Level"
     else
-        return string(level)
+        string(level)
     end
 end
 
