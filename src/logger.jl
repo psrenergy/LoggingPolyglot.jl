@@ -52,7 +52,7 @@ end
 
 function get_level_string(level::LogLevel)
     return if level == SUCCESS_LEVEL
-         "Success"
+        "Success"
     elseif level == FATAL_ERROR_LEVEL
         "Fatal Error"
     elseif Logging.Debug < level < Logging.Info
