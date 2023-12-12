@@ -57,7 +57,7 @@ function get_level_string(level::LogLevel)
         return "Debug Level"
     else
         string(level)
-    end 
+    end
 end
 
 function get_tag_brackets(level::LogLevel, brackets_dict::Dict)
