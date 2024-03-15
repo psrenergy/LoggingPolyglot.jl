@@ -32,7 +32,9 @@ function fatal_error(
     @logmsg FATAL_ERROR_LEVEL msg
 
     logger = Logging.global_logger()
-    close_polyglot_logger(logger)
+    if logger isa LoggingExtras.TeeLogger
+        close_polyglot_logger(logger)
+    end
     throw(exception)
     return nothing
 end
