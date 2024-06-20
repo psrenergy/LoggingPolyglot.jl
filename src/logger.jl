@@ -13,6 +13,19 @@ function close_polyglot_logger(logger::TeeLogger)
 end
 
 """
+    close_polyglot_logger()
+
+Calls [`close_polyglot_logger(logger::TeeLogger)`](@ref) if `global_logger()` is a `TeeLogger`
+"""
+function close_polyglot_logger()
+    logger = Logging.global_logger()
+    if logger isa LoggingExtras.TeeLogger
+        close_polyglot_logger(logger)
+    end
+    return nothing
+end
+
+"""
 remove_log_file_path_on_logger_creation(path::AbstractString)
 
 * `path`: Path to log file to be removed
